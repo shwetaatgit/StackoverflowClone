@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 from .models import question
 from . import forms
 
@@ -20,3 +20,7 @@ def addquestion(request):
     else:
         form= forms.AddQuestion()
     return render(request, 'AddQuestion.html',{'form':form})
+
+def Q_detail(request, id):
+    obj= get_object_or_404(question,pk=id)
+    return render(request,'detail.html',{'obj':obj})

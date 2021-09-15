@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 card mb-4  mt-3 left  top">
+      <div class="card-body">
+        <h3>{% block title %} {{ obj.text }} {% endblock title %}</h3>
+        <p class=" text-muted">{{ obj.author }} | {{ obj.created_on }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

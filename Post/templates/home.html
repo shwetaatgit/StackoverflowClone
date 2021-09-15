@@ -26,10 +26,7 @@
         text-align: left;
         padding-left: 10px;
     }
-    .cards{
-        padding: 10px;
-        height: 200px;
-    }
+    
 </style>
 <br>
 <div class="container">
@@ -39,9 +36,9 @@
         {% for question in question_list %}
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title"><b>{{question.text|slice:":100" }}</b></h5>
+                <a href="{% url 'detail' question.id %}"><h5 class="card-title"><b>{{question.text|slice:":100" }}</b></h5>
+                </a>
                 <h6 class="card-subtitle mb-2 text-muted">{{ question.author }} | {{ question.created_on}}</h6>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
         {% endfor %}
