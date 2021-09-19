@@ -6,9 +6,25 @@
   <div class="row">
     <div class="col-md-8 card mb-4  mt-3 left  top">
       <div class="card-body">
-        <h3>{% block title %} {{ obj.text }} {% endblock title %}</h3>
-        <p class=" text-muted">{{ obj.author }} | {{ obj.created_on }}</p>
+        <h3>{% block title %} {{ obj.Que_text }} {% endblock title %}</h3>
+        <p class=" text-muted">{{ obj.Que_author }} | {{ obj.Que_created_on }}</p>
       </div>
+      <h4>Answers..</h4><br>
+      {% if not obj.answers.all %}
+          No answers yet..
+      {% else %}
+          {% for ans in obj.answers.all %}
+            {{ ans.Ans_body }} <br>
+            <small class=" text-muted">{{ ans.Ans_author}}- {{ ans.Ans_created_on }}</small> <br>
+          {% endfor %}
+      {% endif %}
+      <hr>
+      <h4>Add your Answer here!</h4>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form }}
+            <button class="btn btn-secondary">Add Answer</button>
+        </form>
     </div>
   </div>
 </div>
