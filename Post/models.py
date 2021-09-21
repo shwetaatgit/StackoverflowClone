@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import tree
 
 class question(models.Model):
     Que_text = models.TextField()
@@ -10,7 +11,7 @@ class question(models.Model):
         ordering = ['-Que_created_on']
 
     def __str__(self):
-        return self.text
+        return self.Que_text
 
 class answer(models.Model):
     question = models.ForeignKey(question, related_name= 'answers', on_delete= models.CASCADE)
@@ -22,4 +23,17 @@ class answer(models.Model):
         ordering = ['-Ans_created_on']
 
     def __str__(self):
-        return '%s - %s' % (self.question.text, self.author)
+        return '%s - %s' % (self.question.Que_text, self.Ans_author)
+
+class comment(models.Model):
+    question = models.ForeignKey(question, related_name= 'comments',on_delete= models.CASCADE, null=True)
+    answer = models.ForeignKey(answer, on_delete= models.CASCADE, null=True)
+    comment_text = models.TextField()
+    comment_author = models.ForeignKey(User, on_delete= models.CASCADE)
+    comment_created_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-comment_created_on']
+
+    def __str__(self):
+        return '%s - %s' % (self.comment_text, self.comment_author)

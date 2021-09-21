@@ -5,5 +5,6 @@ from . import views
 urlpatterns = [
     path('', views.QuestionList, name='home'),
     path('add_question/', views.addquestion, name="add_question"),
+    path('add_comment/<int:question_id>', views.addcomment_ques, name="add_comment_Q"),
     path('<int:question_id>', views.Q_detail, name="detail"),
 ]

@@ -39,6 +39,7 @@
                 <a href="{% url 'detail' question.id %}"><h5 class="card-title"><b>{{question.Que_text|slice:":100" }}</b></h5>
                 </a>
                 <h6 class="card-subtitle mb-2 text-muted">{{ question.Que_author }} | {{ question.Que_created_on}}</h6>
+                
             </div>
           </div>
         {% endfor %}
