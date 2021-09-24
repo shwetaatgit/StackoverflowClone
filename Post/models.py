@@ -6,7 +6,10 @@ class question(models.Model):
     Que_text = models.TextField()
     Que_author = models.ForeignKey(User, on_delete= models.CASCADE)
     Que_created_on = models.DateTimeField(auto_now_add=True)
-    Upvotes_Que = models.ManyToManyField(User,related_name = 'Upvotes_Que', null=True, blank=True)
+    Upvotes_Que = models.ManyToManyField(User,related_name = 'Qupvotes', null=True, blank=True)
+
+    def total_upvotes(self):
+        return self.Upvotes_Que.count()
 
     class Meta:
         ordering = ['-Que_created_on']

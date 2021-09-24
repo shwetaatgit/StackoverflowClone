@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404, render,redirect
 from .models import answer, question, comment
 from . import forms
 import Post
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 def QuestionList(request):
     questions = question.objects.all()
@@ -30,7 +32,7 @@ def addcomment_ques(request, question_id):
             instance.comment_author = request.user
             instance.question = question.objects.get(pk=question_id)
             instance.save()
-            return redirect('home')
+            return HttpResponseRedirect(reverse('detail',args=[str(question_id)]))
     else:
         form= forms.AddComment_Ques()
     return render(request, 'AddComment.html',{'form':form})
@@ -51,6 +53,9 @@ def addcomment_ans(request, answer_id):
 def Q_detail(request, question_id):
     obj = get_object_or_404(question, pk=question_id)
 
+    is_up = False
+    if obj.Upvotes_Que.filter(id=request.user.id).exists():
+        is_up = True
     if request.method=='POST':
         form= forms.AddAnswer(request.POST, request.FILES)
         if form.is_valid():
@@ -58,12 +63,25 @@ def Q_detail(request, question_id):
             instance.Ans_author = request.user
             instance.question = question.objects.get(pk=question_id)
             instance.save()
-            return redirect('home')
+            return HttpResponseRedirect(reverse('detail',args=[str(question_id)]))
     else:
         form= forms.AddAnswer()
-        
+    
     context={
         'obj':obj,
-        'form': form
+        'form': form,
+        'is_up': is_up,
+        'total_upvotes':obj.total_upvotes(),
     }
     return render(request, 'detail.html',context)
+
+def Upvote(request, question_id):
+    obj = get_object_or_404(question, pk=question_id)
+    is_up = False
+    if obj.Upvotes_Que.filter(id=request.user.id).exists():
+        obj.Upvotes_Que.remove(request.user)
+        is_up = False
+    else:
+        obj.Upvotes_Que.add(request.user)
+        is_up = True
+    return HttpResponseRedirect(reverse('detail',args=[str(question_id)]))
