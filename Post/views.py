@@ -53,6 +53,7 @@ def addcomment_ans(request, answer_id):
 def Q_detail(request, question_id):
     obj = get_object_or_404(question, pk=question_id)
 
+    obj.Views.add(request.user)
     is_up = False
     if obj.Upvotes_Que.filter(id=request.user.id).exists():
         is_up = True
@@ -72,6 +73,7 @@ def Q_detail(request, question_id):
         'form': form,
         'is_up': is_up,
         'total_upvotes':obj.total_upvotes(),
+        'total_views':obj.total_views(),
     }
     return render(request, 'detail.html',context)
 
