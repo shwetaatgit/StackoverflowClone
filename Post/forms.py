@@ -15,3 +15,8 @@ class AddComment_Ques(forms.ModelForm):
     class Meta:
         model = models.comment
         fields = ['comment_text']
+
+class AddComment_Ans(forms.ModelForm):
+    class Meta:
+        model = models.comment
+        fields = ['comment_text']

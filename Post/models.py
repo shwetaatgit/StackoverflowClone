@@ -6,6 +6,7 @@ class question(models.Model):
     Que_text = models.TextField()
     Que_author = models.ForeignKey(User, on_delete= models.CASCADE)
     Que_created_on = models.DateTimeField(auto_now_add=True)
+    Upvotes_Que = models.ManyToManyField(User,related_name = 'Upvotes_Que', null=True, blank=True)
 
     class Meta:
         ordering = ['-Que_created_on']
@@ -27,7 +28,7 @@ class answer(models.Model):
 
 class comment(models.Model):
     question = models.ForeignKey(question, related_name= 'comments',on_delete= models.CASCADE, null=True)
-    answer = models.ForeignKey(answer, on_delete= models.CASCADE, null=True)
+    answer = models.ForeignKey(answer,  related_name= 'comments_ans',on_delete= models.CASCADE, null=True)
     comment_text = models.TextField()
     comment_author = models.ForeignKey(User, on_delete= models.CASCADE)
     comment_created_on = models.DateTimeField(auto_now_add=True)

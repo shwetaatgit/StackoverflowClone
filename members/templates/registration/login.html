@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<style>
+    .add-question{
+        padding: 35px;
+    }
+</style>
+
+<div class="add-question">
+    <h2>Login</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p><label for="id_username">Username:</label> <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username"></p>
+        <p><label for="id_password">Password:</label> <input type="password" name="password" autocomplete="current-password" required id="id_password"></p>
+        <button class="btn btn-secondary">Login</button>
+    </form>
+  
+</div>
+
+{% endblock %}

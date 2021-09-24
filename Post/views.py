@@ -35,8 +35,22 @@ def addcomment_ques(request, question_id):
         form= forms.AddComment_Ques()
     return render(request, 'AddComment.html',{'form':form})
 
+def addcomment_ans(request, answer_id):
+    if request.method=='POST':
+        form= forms.AddComment_Ans(request.POST)
+        if form.is_valid():
+            instance= form.save(commit=False)
+            instance.comment_author = request.user
+            instance.answer = answer.objects.get(pk=answer_id)
+            instance.save()
+            return redirect('home')
+    else:
+        form= forms.AddComment_Ans()
+    return render(request, 'AddComment.html',{'form':form})
+
 def Q_detail(request, question_id):
     obj = get_object_or_404(question, pk=question_id)
+
     if request.method=='POST':
         form= forms.AddAnswer(request.POST, request.FILES)
         if form.is_valid():
@@ -47,6 +61,7 @@ def Q_detail(request, question_id):
             return redirect('home')
     else:
         form= forms.AddAnswer()
+        
     context={
         'obj':obj,
         'form': form

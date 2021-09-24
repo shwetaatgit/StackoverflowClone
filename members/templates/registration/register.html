@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<style>
+    .add-question{
+        padding: 35px;
+    }
+</style>
+
+<div class="add-question">
+    <h2>Register</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p><label for="id_username">Username:</label> <input type="text" name="username" maxlength="150" autocapitalize="none" autocomplete="username" autofocus required id="id_username"> </p>
+        <p><label for="id_password1">Password:</label> <input type="password" name="password1" autocomplete="new-password" required id="id_password1"></p>
+        <p><label for="id_password2">Password confirmation:</label> <input type="password" name="password2" autocomplete="new-password" required id="id_password2"></p>
+        <button class="btn btn-secondary">Register</button>
+    </form>
+  
+</div>
+
+{% endblock %}

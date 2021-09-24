@@ -42,12 +42,21 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
+                        {% if user.is_authenticated %}
                         <li class="nav-item text-black">
                             <a class="nav-link text-black font-weight-bold" href="{% url 'add_question' %}">Add Question</a>
                         </li>
-                        <!-- <li class="nav-item text-black">
-                            <a class="nav-link text-black font-weight-bold" href="#">Contact</a>
-                        </li> -->
+                        <li class="nav-item text-black">
+                            <a class="nav-link text-black font-weight-bold" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item text-black">
+                            <a class="nav-link text-black font-weight-bold" href="{% url 'register' %}">Register</a>
+                        </li>
+                        <li class="nav-item text-black">
+                            <a class="nav-link text-black font-weight-bold" href="{% url 'login' %}">Login</a>
+                        </li>
+                        
                     </ul>
                 </div>
             </div>

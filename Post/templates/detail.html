@@ -12,14 +12,18 @@
 
       
       <h5>Comments..</h5><br>
-      <small><a href="{% url 'add_comment_Q' obj.pk  %}">Add Comments</a></small>
+      {% if user.is_authenticated %}
+        <small><a href="{% url 'add_comment_Q' obj.pk  %}">Add Comments</a></small>
+      {% else %}
+      <small>Login to add comments</small><br>
+      {% endif %}
           {% for j in obj.comments.all %}
             {{ j.comment_text }} <br>
             <small class=" text-muted">{{ j.comment_author}}- {{ j.comment_created_on }}</small> <br>
           {% endfor %}
 
 
-      <h4>Answers..</h4><br>
+      <h4>Answers..</h4>
       {% if not obj.answers.all %}
           No answers yet..
       {% else %}
