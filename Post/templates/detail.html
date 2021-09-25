@@ -1,61 +1,114 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<head>
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>   
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function() {
+           $( ".accordion" ).accordion({active: false, collapsible: true});
+        });
+     </script>
+     <style>
+       .box{
+          width: 100%;
+          font-size: small;
+        }
+     </style>
+</head>
+
 
 <div class="container">
   <div class="row">
-    <div class="col-md-8 card mb-4  mt-3 left  top">
+    <div class="col-md-8 card mb-4  mt-3 ">
+
       <div class="card-body">
         <h3>{% block title %} {{ obj.Que_text }} {% endblock title %}</h3>
+        <h6>Tag: {{ obj.tags }}</h6>
+        <h6>Total views: {{ total_views }}</h6>
         <p class=" text-muted">{{ obj.Que_author }} | {{ obj.Que_created_on }}</p>
       </div>
-      Total views: {{ total_views }}
+      
       {% if user.is_authenticated %}
       <form action="{% url 'upvote' obj.pk %}" method="POST">
         {% csrf_token %}
         {% if is_up %}
-          <button type="submit", name="question_id", value="{{ question_id }}", class="btn btn-primary btn-sm">Devote</button>
+          <button type="submit", name="question_id", value="{{ question_id }}", class="btn btn-success">Vote</button>
         {% else %}
-          <button type="submit", name="question_id", value="{{ question_id }}", class="btn btn-primary btn-sm">Upvote</button>
+          <button type="submit", name="question_id", value="{{ question_id }}", class="btn btn-primary">Vote</button>
         {% endif %} 
-        {{ total_upvotes }} Upvotes
+        {{ total_upvotes }} Votes
       </form>
       {% endif %}
-      <hr>
+      
       <br>
+      <div class="accordion">
+            <!-- <h5>Comments.. <br></h5> -->
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">Comments..</button>
+            <div class="flex">
+                {% if user.is_authenticated %}
+                  <small><a href="{% url 'add_comment_Q' obj.pk  %}">Add Comments</a></small>
+                {% else %}
+                  <small>Login to add comments</small><br>
+                {% endif %}<br>
+                
+                {% for j in obj.comments.all %}
+                  {{ j.comment_text }} <br>
+                  <small class=" text-muted">{{ j.comment_author}}- {{ j.comment_created_on }}</small> <br>
+                {% endfor %}
+            </div>
+        </div> 
+        <hr>
 
-      <h5>Comments..</h5>
-      {% if user.is_authenticated %}
-        <small><a href="{% url 'add_comment_Q' obj.pk  %}">Add Comments</a></small>
-      {% else %}
-      <small>Login to add comments</small><br>
-      {% endif %}
-          {% for j in obj.comments.all %}
-            {{ j.comment_text }} <br>
-            <small class=" text-muted">{{ j.comment_author}}- {{ j.comment_created_on }}</small> <br>
-          {% endfor %}
-
-
+      <br>  
       <h4>Answers..</h4>
       {% if not obj.answers.all %}
           No answers yet..
       {% else %}
           {% for ans in obj.answers.all %}
             {{ ans.Ans_body }} <br>
-            <small class=" text-muted">{{ ans.Ans_author}}- {{ ans.Ans_created_on }}</small> <br>
+            <small class=" text-muted">{{ ans.Ans_author}}- {{ ans.Ans_created_on }}</small>
+
+
+
+            <div class="accordion">
+              <p>Comments</p>
+              <div>
+              {% if user.is_authenticated %}
+                <small><a href="{% url 'add_comment_A' obj.pk ans.pk  %}">Add ans Comments</a></small>
+              {% else %}
+                <small>Login to add comments</small><br>
+              {% endif %}<br>
+              
+              {% if not ans.comments_ans.all %}
+                  No comments yet..
+              {% else %}
+                {% for k in ans.comments_ans.all %}
+                  {{ k.comment_text }} <br>
+                  <small class=" text-muted">{{ k.comment_author}}- {{ k.comment_created_on }}</small> <br>
+                {% endfor %}
+              {% endif %}
+              </div>
+            </div>
+            <hr>
           {% endfor %}
+          
       {% endif %}
       <hr>
 
       <h4>Add your Answer here!</h4>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <label for="id_Ans_body">Ans body:</label></th><td><textarea name="Ans_body" cols="40" rows="10" required id="id_Ans_body"></textarea>
+            <textarea name="Ans_body" cols="40" rows="10" required id="id_Ans_body" class="form-control" placeholder="Answer"></textarea>
+            <br>
             <button class="btn btn-secondary">Add Answer</button>
         </form>
       
     </div>
   </div>
 </div>
+
+
 
 {% endblock content %}

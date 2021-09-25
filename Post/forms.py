@@ -4,7 +4,7 @@ from . import models
 class AddQuestion(forms.ModelForm):
     class Meta:
         model = models.question
-        fields = ['Que_text']
+        fields = ['Que_text','tags']
 
 class AddAnswer(forms.ModelForm):
     class Meta:

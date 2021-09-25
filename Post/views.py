@@ -37,7 +37,7 @@ def addcomment_ques(request, question_id):
         form= forms.AddComment_Ques()
     return render(request, 'AddComment.html',{'form':form})
 
-def addcomment_ans(request, answer_id):
+def addcomment_ans(request, answer_id,question_id):
     if request.method=='POST':
         form= forms.AddComment_Ans(request.POST)
         if form.is_valid():
@@ -45,10 +45,10 @@ def addcomment_ans(request, answer_id):
             instance.comment_author = request.user
             instance.answer = answer.objects.get(pk=answer_id)
             instance.save()
-            return redirect('home')
+            return HttpResponseRedirect(reverse('detail',args=[str(question_id)]))
     else:
         form= forms.AddComment_Ans()
-    return render(request, 'AddComment.html',{'form':form})
+    return render(request, 'AddComment_A.html',{'form':form})
 
 def Q_detail(request, question_id):
     obj = get_object_or_404(question, pk=question_id)

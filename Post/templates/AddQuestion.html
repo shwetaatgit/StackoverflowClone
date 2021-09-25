@@ -3,19 +3,47 @@
 {% block content %}
 <style>
     .add-question{
-        padding: 35px;
+        padding: 50px;
+        padding-left: 50px;
+        padding-right: 10%;
     }
 </style>
 
 <div class="add-question">
-    
-    <h2>Add your Question here!</h2>
+    <h2>Ask your Question here!</h2>
+
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <p><label for="id_Que_text">Que text:</label> <textarea name="Que_text" cols="40" rows="10" required id="id_Que_text"></textarea></p>
+            <textarea name="Que_text" cols="40" rows="10" class="form-control" required id="id_Que_text" placeholder="Question"></textarea>
+            <p><label for="id_tags">Tags:</label> <select name="tags" id="id_tags">
+                <option value="Python">Python</option>
+
+                <option value="django">django</option>
+
+                <option value="C">C</option>
+
+                <option value="Node.js">Node.js</option>
+
+                <option value="excel">excel</option>
+
+                <option value="pandas">pandas</option>
+
+                <option value="linux">linux</option>
+
+                <option value="data structures">data structures</option>
+
+                <option value="sql">sql</option>
+
+                <option value="other" selected>other</option></select></p><br>
             <button class="btn btn-secondary">Add Question</button>
         </form>
-  
+        
+        <!-- <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-secondary">Add Question</button>
+        </form>
+   -->
 </div>
 
 {% endblock %}

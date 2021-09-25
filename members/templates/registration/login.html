@@ -2,18 +2,20 @@
 {% block title %}Login{% endblock %}
 {% block content %}
 <style>
-    .add-question{
+    .container{
         padding: 35px;
+        padding-left: 25%;
+        padding-right: 35%;
     }
 </style>
 
-<div class="add-question">
+<div class="container">
     <h2>Login</h2>
 
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <p><label for="id_username">Username:</label> <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username"></p>
-        <p><label for="id_password">Password:</label> <input type="password" name="password" autocomplete="current-password" required id="id_password"></p>
+        <p><input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username" class="form-control" placeholder="Username"></p>
+        <p><input type="password" name="password" autocomplete="current-password" required id="id_password" class="form-control" placeholder="Password"></p>
         <button class="btn btn-secondary">Login</button>
     </form>
   
