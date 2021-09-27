@@ -26,8 +26,9 @@
       <div class="card-body">
         <h3>{% block title %} {{ obj.Que_text }} {% endblock title %}</h3>
         <h6>Tag: {{ obj.tags }}</h6>
-        <h6>Total views: {{ total_views }}</h6>
-        <p class=" text-muted">{{ obj.Que_author }} | {{ obj.Que_created_on }}</p>
+        <!-- <h6>Total views: {{ total_views }}</h6> -->
+        <small>Views:{{obj.Views.count}} | Comments: {{obj.comments.all.count}} | Answers: {{obj.answers.all.count}}</small><br>
+        <small class=" text-muted">{{ obj.Que_author }} | {{ obj.Que_created_on }}</small>
       </div>
       
       {% if user.is_authenticated %}
@@ -41,7 +42,7 @@
         {{ total_upvotes }} Votes
       </form>
       {% endif %}
-      
+      <hr>
       <br>
       <div class="accordion">
             <!-- <h5>Comments.. <br></h5> -->
@@ -59,7 +60,7 @@
                 {% endfor %}
             </div>
         </div> 
-        <hr>
+
 
       <br>  
       <h4>Answers..</h4>

@@ -52,11 +52,15 @@ def addcomment_ans(request, answer_id,question_id):
 
 def Q_detail(request, question_id):
     obj = get_object_or_404(question, pk=question_id)
-
-    obj.Views.add(request.user)
+    if  request.user.is_authenticated:
+        obj.Views.add(request.user)
+    # if obj.Views.filter(id=request.user.id).exists():
+    #     obj.Views.add(request.user)
+        
     is_up = False
     if obj.Upvotes_Que.filter(id=request.user.id).exists():
         is_up = True
+        
     if request.method=='POST':
         form= forms.AddAnswer(request.POST, request.FILES)
         if form.is_valid():
