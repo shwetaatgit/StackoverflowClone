@@ -1,0 +1,49 @@
+{% extends "base.html" %} 
+
+{% block content %}
+
+<style>
+    body {
+        font-family: "Roboto", sans-serif;
+        font-size: 18px;
+        background-color: #fdfdfd;
+    }
+    .centre{
+        text-align: left;
+        padding-left: 10px;
+    }
+    
+</style>
+<br>
+<div class="container">
+    <h2 class="centre"> Results </h2>
+    <div class="slider">
+        {% if question_list|length < 1 %}
+            <p>No search results</p>
+            Your search did not match with any questions.
+        {% endif %}
+        {% for question in question_list %}
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="row" style="position: relative;">
+                    <div style="position: absolute;left:10px;">
+                        <span style="color: green; font-size: 30px; font-weight:bold;">{{question.Upvotes_Que.count}}</span><br>
+                        <small>Votes</small>
+                    </div>
+                    <div style="padding-left:70px;">
+                        <a href="{% url 'detail' question.id %}"><h6 class="card-title">{{question.Que_text|slice:":100" }}</h6></a>
+                        <small class="card-subtitle mb-2 text-muted">{{ question.Que_author }} | {{ question.Que_created_on}}</small>
+                    </div>
+                    <div style="position: absolute;right:10px;"><small>Views:{{question.Views.count}}<br>
+                        Comments: {{question.comments.all.count}} |
+                        Answers: {{question.answers.all.count}}</small>
+                    </div>
+                </div>
+            </div>
+          </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
