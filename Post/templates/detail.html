@@ -25,6 +25,7 @@
 
       <div class="card-body">
         <h3>{% block title %} {{ obj.Que_text }} {% endblock title %}</h3>
+        <small><a href="{% url 'edit_question' obj.pk  %}">Edit</a></small>
         <h6>Tag: {{ obj.tags }}</h6>
         <!-- <h6>Total views: {{ total_views }}</h6> -->
         <small>Views:{{obj.Views.count}} | Comments: {{obj.comments.all.count}} | Answers: {{obj.answers.all.count}}</small><br>
@@ -41,12 +42,13 @@
         {% endif %} 
         {{ total_upvotes }} Votes
       </form>
+      
       {% endif %}
       <hr>
       <br>
       <div class="accordion">
             <!-- <h5>Comments.. <br></h5> -->
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">Comments..</button>
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">Comments ({{obj.comments.all.count}})</button>
             <div class="flex">
                 {% if user.is_authenticated %}
                   <small><a href="{% url 'add_comment_Q' obj.pk  %}">Add Comments</a></small>
@@ -55,8 +57,9 @@
                 {% endif %}<br>
                 
                 {% for j in obj.comments.all %}
-                  {{ j.comment_text }} <br>
+                  {{ j.comment_text }}<small> <a href="{% url 'edit_comment_Q' obj.pk j.pk  %}">edit</a></small><br>
                   <small class=" text-muted">{{ j.comment_author}}- {{ j.comment_created_on }}</small> <br>
+                  
                 {% endfor %}
             </div>
         </div> 
@@ -68,13 +71,13 @@
           No answers yet..
       {% else %}
           {% for ans in obj.answers.all %}
-            {{ ans.Ans_body }} <br>
-            <small class=" text-muted">{{ ans.Ans_author}}- {{ ans.Ans_created_on }}</small>
+            <p>{{ ans.Ans_body }} <small> <a href="{% url 'edit_answer' obj.pk ans.pk  %}">Edit</a></small><br>
+            <small class=" text-muted">{{ ans.Ans_author}}- {{ ans.Ans_created_on }}</small></p>
 
 
 
             <div class="accordion">
-              <p>Comments</p>
+              <p>Comments ({{ans.comments_ans.all.count}})</p>
               <div>
               {% if user.is_authenticated %}
                 <small><a href="{% url 'add_comment_A' obj.pk ans.pk  %}">Add ans Comments</a></small>
@@ -86,8 +89,9 @@
                   No comments yet..
               {% else %}
                 {% for k in ans.comments_ans.all %}
-                  {{ k.comment_text }} <br>
-                  <small class=" text-muted">{{ k.comment_author}}- {{ k.comment_created_on }}</small> <br>
+                  <p>{{ k.comment_text }} <small> <a href="{% url 'edit_comment_Q' obj.pk k.pk  %}">edit</a></small><br>
+                  <small class=" text-muted">{{ k.comment_author}}- {{ k.comment_created_on }}</small> </p><hr>
+
                 {% endfor %}
               {% endif %}
               </div>

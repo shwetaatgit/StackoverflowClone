@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Edit Answer{% endblock %}
+{% block content %}
+    
+{% if user.is_authenticated %}
+<h1>Edit Answer</h1>
+<br><br>
+<div class="form-group">
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-secondary">Edit</button>
+</form>
+</div>
+
+{% else %}
+You are not allowed here! Please go to login.
+
+{% endif %}
+
+{% endblock %}

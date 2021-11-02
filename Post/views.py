@@ -4,7 +4,9 @@ from . import forms
 import Post
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.contrib import messages
+from django.views.generic import UpdateView
+from .forms import EditForm
+from django.urls import reverse_lazy
 
 def QuestionList(request):
     questions = question.objects.all()
@@ -98,8 +100,51 @@ def search(request):
     if len(query)>80:
         questions = []
     else:
-        questions = question.objects.filter(Que_text__icontains=query)
+        questions = question.objects.filter(tags__icontains=query)
     context ={
         'question_list': questions,
     }
     return render(request, "search.html", context)
+
+def editquestion(request, question_id):
+    ques = get_object_or_404(question, pk=question_id)
+    
+    if request.method=='POST':
+        form= forms.EditForm(request.POST,instance=ques)
+        
+        if form.is_valid():
+            instance= form.save(commit=False)
+            if instance.Que_author == request.user:
+                instance.save()
+            return HttpResponseRedirect(reverse('detail',args=[str(question_id)]))
+    else:
+        form= forms.EditForm(instance=ques)
+    return render(request, 'EditQues.html',{'form':form, 'ques':ques})
+
+def editcomment(request,comment_id, question_id):
+    comm = get_object_or_404(comment, pk=comment_id)
+
+    if request.method=='POST':
+        form= forms.EditComment(request.POST,instance=comm)
+        if form.is_valid():
+            instance= form.save(commit=False)
+            if instance.comment_author == request.user:
+                instance.save()
+            return HttpResponseRedirect(reverse('detail',args=[str(question_id)]))
+    else:
+        form= forms.EditComment(instance=comm)
+    return render(request, 'EditComment.html',{'form':form, 'comm':comm})
+
+def editanswer(request,answer_id, question_id):
+    ans = get_object_or_404(answer, pk=answer_id)
+
+    if request.method=='POST':
+        form= forms.AddAnswer(request.POST,instance=ans)
+        if form.is_valid():
+            instance= form.save(commit=False)
+            if instance.Ans_author == request.user:
+                instance.save()
+            return HttpResponseRedirect(reverse('detail',args=[str(question_id)]))
+    else:
+        form= forms.AddAnswer(instance=ans)
+    return render(request, 'EditAns.html',{'form':form, 'ans':ans})
